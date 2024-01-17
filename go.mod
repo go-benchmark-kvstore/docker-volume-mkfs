@@ -9,7 +9,7 @@ require (
 	github.com/rs/zerolog v1.31.1-0.20231108200417-bb14b8b9de11
 	gitlab.com/tozd/go/cli v0.2.2
 	gitlab.com/tozd/go/errors v0.8.0
-	gitlab.com/tozd/go/zerolog v0.5.1
+	gitlab.com/tozd/go/zerolog v0.6.0
 	golang.org/x/sync v0.3.0
 )
 

@@ -18,6 +18,14 @@
     }
   ],
   "propagatedmount": "/mnt",
+  "env": [
+    {
+      "name": "LOGGING_MAIN_LEVEL",
+      "description": "Log entries at the level or higher. Possible: trace,debug,info,warn,error,disabled.",
+      "value": "info",
+      "settable": ["value"]
+    }
+  ],
   "args": {
     "name": "partitions",
     "description": "Partition(s) to use.",

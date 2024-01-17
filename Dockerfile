@@ -12,6 +12,7 @@ RUN \
   mv docker-volume-mkfs /go/bin/docker-volume-mkfs
 
 FROM alpine:3.18
+ENV LOGGING_MAIN_LEVEL=info
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group

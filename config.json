@@ -9,6 +9,14 @@
   "network": {
     "type": "none"
   },
+  "mounts": [
+    {
+      "source": "/dev",
+      "destination": "/dev",
+      "type": "bind",
+      "options": ["rbind"]
+    }
+  ],
   "propagatedmount": "/mnt",
   "args": {
     "name": "partitions",

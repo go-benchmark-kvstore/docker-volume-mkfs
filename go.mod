@@ -6,9 +6,11 @@ require (
 	github.com/alecthomas/kong v0.8.1
 	github.com/docker/go-plugins-helpers v0.0.0-20211224144127-6eecb7beb651
 	github.com/moby/moby v24.0.7+incompatible
+	github.com/rs/zerolog v1.31.1-0.20231108200417-bb14b8b9de11
 	gitlab.com/tozd/go/cli v0.2.2
 	gitlab.com/tozd/go/errors v0.8.0
 	gitlab.com/tozd/go/zerolog v0.5.1
+	golang.org/x/sync v0.3.0
 )
 
 require (
@@ -32,7 +34,6 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rs/zerolog v1.31.1-0.20231108200417-bb14b8b9de11 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/skeema/knownhosts v1.2.1 // indirect
 	github.com/whilp/git-urls v1.0.0 // indirect

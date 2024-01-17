@@ -1,15 +1,20 @@
 package main
 
 import (
+	"bufio"
+	"io"
 	"os"
 	"os/exec"
 	"path"
 	"slices"
+	"strings"
 	"syscall"
 
 	"github.com/docker/go-plugins-helpers/volume"
 	"github.com/moby/moby/daemon/names"
+	"github.com/rs/zerolog"
 	"gitlab.com/tozd/go/errors"
+	"golang.org/x/sync/errgroup"
 )
 
 var _ volume.Driver = (*Driver)(nil)
@@ -74,12 +79,51 @@ func (d *Driver) Create(req *volume.CreateRequest) (err error) {
 	return nil
 }
 
+func (d *Driver) redirectToLogger(command, partition, name string, level zerolog.Level, reader io.Reader) {
+	scanner := bufio.NewScanner(reader)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.TrimSpace(line)
+		if len(line) > 0 {
+			d.Logger.WithLevel(level).Str("command", command).Str("partition", partition).Msg(line)
+		}
+	}
+
+	err := scanner.Err()
+	// Reader can get closed and we ignore that.
+	if err != nil && !errors.Is(err, os.ErrClosed) {
+		d.Logger.Warn().Str("command", command).Str("partition", partition).Err(err).Msgf("error reading %s", name)
+	}
+}
+
 func (d *Driver) create(partition string) errors.E {
-	// TODO: Redirect stdout and stderr to logger.
 	cmd := exec.Command("mkfs.xfs", "-f", partition)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return errors.WithStack(cmd.Run())
+
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	defer stdout.Close()
+
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	defer stderr.Close()
+
+	g := errgroup.Group{}
+
+	g.Go(func() error {
+		d.redirectToLogger("mkfs.xfs", partition, "stdout", zerolog.DebugLevel, stdout)
+		return nil
+	})
+	g.Go(func() error {
+		d.redirectToLogger("mkfs.xfs", partition, "stderr", zerolog.ErrorLevel, stderr)
+		return nil
+	})
+
+	return errors.Join(g.Wait(), cmd.Wait())
 }
 
 // Get implements volume.Driver.

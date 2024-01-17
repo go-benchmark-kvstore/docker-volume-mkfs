@@ -298,7 +298,7 @@ variables:
     protected: true
     raw: true
     # sops:enc
-    value: glpat-HKU7qtrYEUgFhY5s543M
+    value: ENC[AES256_GCM,data:LWoMEppGe9ZKDS57XOMNTVFAx86mIrx2IWQ=,iv:2lbT/7e79C3tU2q5SZXcl7JOQM2KeK1gh4+Bv94Qius=,tag:WOT2F1ohDOKKqRX4lYtcAA==,type:str]
     variable_type: env_var
   - description: null
     environment_scope: '*'
@@ -307,10 +307,7 @@ variables:
     protected: true
     raw: true
     # sops:enc
-    value: |
-      # created: 2024-01-17T01:23:21+01:00
-      # public key: age10ztp8cxf069nmcmyf39pz5lma0hc3f20vxus4j2dtxpfy7xalsvs5cppky
-      AGE-SECRET-KEY-1FVK9NNZ45S7KFE5PQYE84KAQZ5DDPMVRQXZ8VH6SPPCZA8ATC45S94NMN4
+    value: ENC[AES256_GCM,data:BKByp8EQJ4DzqEPBBBDy7a2qkwdwK7RNkL7LDO12aiMWLtAEAVGvA+DTEKB9VD/euAGzsH/MRx6DSRz27+oiCGKn9h0BcUaxh/oXYNcOUf7nN+0i6fsmIHDBZnuMubtDlM7Rx1FW3tZBy6X+Idkpw1A7/QQvc1mBwgPWjPdNv4CYwQBUZvzAYspz36C8uT8wPOB+zZO48S+h2H75zVcnQQYb5FwOqVQWmeik0dQrHwgcOLOrXHg8XQLESjt8,iv:hwtcP3/l0VDajkTAg65Z9c45t8nnyZKl9cQ9Ttzf2uc=,tag:qenixSTLiLjR3u9P5aRdpQ==,type:str]
     variable_type: file
 # active: The activation of pipeline schedule. If false is set, the pipeline
 # schedule is initially deactivated. Type: boolean
@@ -324,3 +321,24 @@ variables:
 # variables: Array of variables, with each described by a hash of the form {key:
 # string, value: string, variable_type: string}. Type: array
 pipeline_schedules: []
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age1vlg36msg4fc8n0pn9dyauzzher8l8jk7ragfwn90dkprjjj4henqw85yhn
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQa2M4aEZySDNrbEJ0Tng1
+        K1lPWVd4Y1U0YWNyMHNCRHUrbUNkbG16NDJ3CnhuU0ljOFUwejRKYXpYQjdCdnkx
+        R0MwcC9ZNS9KYTh0a296eThjMGVYZzgKLS0tIHpZc2NpREFhdFp0aENFUXgyaVVr
+        KzdPL1lORHZjUElDMlhkMXVER2RSdFEKXTigwFi2r2i3joiTT9kc4GkTwIID6pMW
+        SNKfuYAMYPvT5+6XhtovLFC8EIPkpSdNp8NRvTRp2fy9CDvblwZRAQ==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2024-01-17T10:27:22Z"
+  mac: ENC[AES256_GCM,data:qvqxd7b0Ed7HyMVC8jt+HEwXuUdocJoUdjipDyXXOoZJNrBEEjZoi2+EJZiomdXUlRTgPoR9JYswApBFc4hpv+hg7IdKEzKecuotnK7BVSIz/HYCG/1jUI7EtDk91xzUrAkcathBDVvxENV5/kmSbuQhBnBvmvRwxDakZIpwcEo=,iv:Guels2Gw8C9SveFc6FYnOb97yKKlmmISeeSYNC1l27M=,tag:xa9sDgjFiJyeSaTNYqkpbA==,type:str]
+  pgp: []
+  encrypted_comment_regex: sops:enc
+  mac_only_encrypted: true
+  version: 3.7.3

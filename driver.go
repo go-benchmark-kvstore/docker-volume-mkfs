@@ -9,6 +9,7 @@ import (
 	"slices"
 	"strings"
 	"syscall"
+	"unicode"
 
 	"github.com/docker/go-plugins-helpers/volume"
 	"github.com/moby/moby/daemon/names"
@@ -84,7 +85,7 @@ func (d *Driver) redirectToLogger(command, partition, name string, level zerolog
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		line = strings.TrimSpace(line)
+		line = strings.TrimRightFunc(line, unicode.IsSpace)
 		if len(line) > 0 {
 			d.Logger.WithLevel(level).Str("command", command).Str("partition", partition).Msg(line)
 		}

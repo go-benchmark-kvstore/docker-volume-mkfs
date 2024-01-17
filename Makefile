@@ -3,10 +3,10 @@ SHELL = /bin/bash -o pipefail
 .PHONY: build build-static lint lint-ci fmt fmt-ci clean release lint-docs audit encrypt decrypt sops
 
 build:
-	go build -trimpath -ldflags "-s -w" -o docker-volume-mkfs go-benchmark-kvstore/docker-volume-mkfs
+	go build -trimpath -ldflags "-s -w" -o docker-volume-mkfs gitlab.com/go-benchmark-kvstore/docker-volume-mkfs
 
 build-static:
-	go build -trimpath -ldflags "-s -w -linkmode external -extldflags '-static'" -o docker-volume-mkfs go-benchmark-kvstore/docker-volume-mkfs
+	go build -trimpath -ldflags "-s -w -linkmode external -extldflags '-static'" -o docker-volume-mkfs gitlab.com/go-benchmark-kvstore/docker-volume-mkfs
 
 lint:
 	golangci-lint run --timeout 4m --color always --allow-parallel-runners --fix
@@ -17,7 +17,7 @@ lint-ci:
 fmt:
 	go mod tidy
 	git ls-files --cached --modified --other --exclude-standard -z | grep -z -Z '.go$$' | xargs -0 gofumpt -w
-	git ls-files --cached --modified --other --exclude-standard -z | grep -z -Z '.go$$' | xargs -0 goimports -w -local go-benchmark-kvstore/docker-volume-mkfs
+	git ls-files --cached --modified --other --exclude-standard -z | grep -z -Z '.go$$' | xargs -0 goimports -w -local gitlab.com/go-benchmark-kvstore/docker-volume-mkfs
 
 fmt-ci: fmt
 	git diff --exit-code --color=always

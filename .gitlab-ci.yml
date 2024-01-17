@@ -16,7 +16,7 @@ variables:
   # We always want to run with the Go version installed in a Docker image.
   GOTOOLCHAIN: local
   DOCKER_PIPELINE_IMAGE_NAME: "$CI_REGISTRY_IMAGE/pipeline:$CI_PIPELINE_ID"
-  DOCKER_PIPELINE_PLUGIN_NAME: "$CI_REGISTRY_IMAGE/plugin/pipeline:$CI_PIPELINE_ID"
+  DOCKER_PIPELINE_PLUGIN_NAME: "$CI_REGISTRY_IMAGE/plugin-pipeline:$CI_PIPELINE_ID"
   DOCKER_DRIVER: overlay2
   DOCKER_BUILDKIT: "1"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic"
@@ -123,8 +123,8 @@ docker:
     - docker plugin create "$DOCKER_PIPELINE_PLUGIN_NAME" .
     - docker plugin push "$DOCKER_PIPELINE_PLUGIN_NAME"
     - docker plugin rm "$DOCKER_PIPELINE_PLUGIN_NAME"
-    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
-    - docker plugin push "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA"
+    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin-commit:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin push "$CI_REGISTRY_IMAGE/plugin-commit:$CI_COMMIT_SHA"
 
   artifacts:
     expose_as: binaries
@@ -155,11 +155,11 @@ push_branch:
     - docker tag "$DOCKER_PIPELINE_IMAGE_NAME" "$CI_REGISTRY_IMAGE/branch/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
     - docker push "$CI_REGISTRY_IMAGE/branch/$CI_COMMIT_REF_SLUG:latest"
     - docker push "$CI_REGISTRY_IMAGE/branch/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
-    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin/branch/$CI_COMMIT_REF_SLUG:latest" "$DOCKER_PIPELINE_PLUGIN_NAME"
-    - docker plugin push "$CI_REGISTRY_IMAGE/plugin/branch/$CI_COMMIT_REF_SLUG:latest"
-    - docker plugin rm "$CI_REGISTRY_IMAGE/plugin/branch/$CI_COMMIT_REF_SLUG:latest"
-    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin/branch/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
-    - docker plugin push "$CI_REGISTRY_IMAGE/plugin/branch/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
+    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin-branch/$CI_COMMIT_REF_SLUG:latest" "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin push "$CI_REGISTRY_IMAGE/plugin-branch/$CI_COMMIT_REF_SLUG:latest"
+    - docker plugin rm "$CI_REGISTRY_IMAGE/plugin-branch/$CI_COMMIT_REF_SLUG:latest"
+    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin-branch/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin push "$CI_REGISTRY_IMAGE/plugin-branch/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
 
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -186,11 +186,11 @@ push_tag:
     - docker tag "$DOCKER_PIPELINE_IMAGE_NAME" "$CI_REGISTRY_IMAGE/tag/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
     - docker push "$CI_REGISTRY_IMAGE/tag/$CI_COMMIT_REF_SLUG:latest"
     - docker push "$CI_REGISTRY_IMAGE/tag/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
-    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin/tag/$CI_COMMIT_REF_SLUG:latest" "$DOCKER_PIPELINE_PLUGIN_NAME"
-    - docker plugin push "$CI_REGISTRY_IMAGE/plugin/tag/$CI_COMMIT_REF_SLUG:latest"
-    - docker plugin rm "$CI_REGISTRY_IMAGE/plugin/tag/$CI_COMMIT_REF_SLUG:latest"
-    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin/tag/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
-    - docker plugin push "$CI_REGISTRY_IMAGE/plugin/tag/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
+    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin-tag/$CI_COMMIT_REF_SLUG:latest" "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin push "$CI_REGISTRY_IMAGE/plugin-tag/$CI_COMMIT_REF_SLUG:latest"
+    - docker plugin rm "$CI_REGISTRY_IMAGE/plugin-tag/$CI_COMMIT_REF_SLUG:latest"
+    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin-tag/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin push "$CI_REGISTRY_IMAGE/plugin-tag/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
 
   rules:
     # Only on protected tags. Protected tags start with "v".

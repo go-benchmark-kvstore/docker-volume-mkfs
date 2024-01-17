@@ -13,7 +13,8 @@
   "args": {
     "name": "partitions",
     "description": "Partition(s) to use.",
-    "value": []
+    "value": [],
+    "settable": ["value"]
   },
   "linux": {
     "capabilities": ["CAP_SYS_ADMIN"],

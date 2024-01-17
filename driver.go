@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
 	"slices"
 
 	"github.com/docker/go-plugins-helpers/volume"
@@ -11,6 +12,8 @@ import (
 )
 
 var _ volume.Driver = (*Driver)(nil)
+
+var nameRegexp = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_.-]$`)
 
 // Capabilities implements volume.Driver.
 func (*Driver) Capabilities() *volume.CapabilitiesResponse {
@@ -26,6 +29,9 @@ func (d *Driver) Create(req *volume.CreateRequest) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
+	if !nameRegexp.MatchString(req.Name) {
+		return errors.New("invalid volume name")
+	}
 	if _, ok := d.volumes[req.Name]; ok {
 		return errors.New("volume already exists")
 	}
@@ -72,12 +78,15 @@ func (d *Driver) Get(req *volume.GetRequest) (*volume.GetResponse, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
+	if !nameRegexp.MatchString(req.Name) {
+		return nil, errors.New("invalid volume name")
+	}
 	if _, ok := d.volumes[req.Name]; !ok {
 		return nil, errors.New("volume does not exist")
 	}
 
 	return &volume.GetResponse{
-		Volume: &volume.Volume{
+		Volume: &volume.Volume{ //nolint:exhaustruct
 			Name:       req.Name,
 			Mountpoint: path.Join(d.Dir, req.Name),
 		},
@@ -91,7 +100,7 @@ func (d *Driver) List() (*volume.ListResponse, error) {
 
 	volumes := []*volume.Volume{}
 	for v := range d.volumes {
-		volumes = append(volumes, &volume.Volume{
+		volumes = append(volumes, &volume.Volume{ //nolint:exhaustruct
 			Name:       v,
 			Mountpoint: path.Join(d.Dir, v),
 		})
@@ -107,6 +116,9 @@ func (d *Driver) Mount(req *volume.MountRequest) (*volume.MountResponse, error) 
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
+	if !nameRegexp.MatchString(req.Name) {
+		return nil, errors.New("invalid volume name")
+	}
 	partition, ok := d.volumes[req.Name]
 	if !ok {
 		return nil, errors.New("volume does not exist")
@@ -128,7 +140,7 @@ func (d *Driver) Mount(req *volume.MountRequest) (*volume.MountResponse, error) 
 
 func (d *Driver) mount(partition, name string) errors.E {
 	p := path.Join(d.Dir, name)
-	err := os.MkdirAll(p, 0o700)
+	err := os.MkdirAll(p, 0o700) //nolint:gomnd
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -145,6 +157,9 @@ func (d *Driver) Path(req *volume.PathRequest) (*volume.PathResponse, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
+	if !nameRegexp.MatchString(req.Name) {
+		return nil, errors.New("invalid volume name")
+	}
 	if _, ok := d.volumes[req.Name]; !ok {
 		return nil, errors.New("volume does not exist")
 	}
@@ -159,6 +174,9 @@ func (d *Driver) Remove(req *volume.RemoveRequest) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
+	if !nameRegexp.MatchString(req.Name) {
+		return errors.New("invalid volume name")
+	}
 	if _, ok := d.volumes[req.Name]; !ok {
 		return errors.New("volume does not exist")
 	}
@@ -174,6 +192,9 @@ func (d *Driver) Unmount(req *volume.UnmountRequest) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
+	if !nameRegexp.MatchString(req.Name) {
+		return errors.New("invalid volume name")
+	}
 	if _, ok := d.volumes[req.Name]; !ok {
 		return errors.New("volume does not exist")
 	}
@@ -197,7 +218,7 @@ func (d *Driver) Unmount(req *volume.UnmountRequest) error {
 
 func (d *Driver) umount(name string) errors.E {
 	// TODO: Redirect stdout and stderr to logger.
-	cmd := exec.Command("umount", path.Join(d.Dir, name))
+	cmd := exec.Command("umount", path.Join(d.Dir, name)) //nolint:gosec
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return errors.WithStack(cmd.Run())

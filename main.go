@@ -12,11 +12,12 @@ import (
 	"gitlab.com/tozd/go/zerolog"
 )
 
+//nolint:lll
 type Driver struct {
 	zerolog.LoggingConfig
 
-	Partitions []string `arg:"" help:"Partition(s) to use." required:"" name:"partition" type:"path"`
-	Dir        string   `short:"d" help:"Directory under which to mount partitions. Default: ${default}." default:"/mnt" type:"path" placeholder:"DIR"`
+	Partitions []string `arg:""                help:"Partition(s) to use."                                            name:"partition"                   required:""           type:"path"`
+	Dir        string   `       default:"/mnt" help:"Directory under which to mount partitions. Default: ${default}."                  placeholder:"DIR"             short:"d" type:"path"`
 
 	// Map between volume names and partitions.
 	volumes map[string]string

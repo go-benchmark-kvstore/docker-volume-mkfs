@@ -17,4 +17,5 @@ COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 COPY --from=build /go/bin/docker-volume-mkfs /
 RUN apk --update --no-cache add xfsprogs
+RUN mkdir -p /run/docker/plugins /mnt
 ENTRYPOINT ["/docker-volume-mkfs"]

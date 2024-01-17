@@ -1,0 +1,22 @@
+{
+  "description": "Manage volumes by formatting partitions",
+  "documentation": "https://gitlab.com/go-benchmark-kvstore/docker-volume-mkfs",
+  "interface": {
+    "socket": "mkfs.sock",
+    "types": ["docker.volumedriver/1.0"]
+  },
+  "entrypoint": ["/docker-volume-mkfs"],
+  "network": {
+    "type": "none"
+  },
+  "propagatedmount": "/mnt",
+  "args": {
+    "name": "partitions",
+    "description": "Partition(s) to use.",
+    "value": []
+  },
+  "linux": {
+    "capabilities": ["CAP_SYS_ADMIN"],
+    "allowAllDevices": true
+  }
+}

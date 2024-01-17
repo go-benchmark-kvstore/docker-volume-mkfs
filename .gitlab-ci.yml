@@ -11,9 +11,12 @@ variables:
   # We want full history so that "git describe" always works correctly.
   GIT_DEPTH: 0
   FF_ENABLE_BASH_EXIT_CODE_CHECK: "true"
+  # Disable umask 0000. See: https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1736
+  FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: 1
   # We always want to run with the Go version installed in a Docker image.
   GOTOOLCHAIN: local
   DOCKER_PIPELINE_IMAGE_NAME: "$CI_REGISTRY_IMAGE/pipeline:$CI_PIPELINE_ID"
+  DOCKER_PIPELINE_PLUGIN_NAME: "$CI_REGISTRY_IMAGE/plugin/pipeline:$CI_PIPELINE_ID"
   DOCKER_DRIVER: overlay2
   DOCKER_BUILDKIT: "1"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic"
@@ -114,7 +117,13 @@ docker:
     - docker push "$CI_REGISTRY_IMAGE/commit:$CI_COMMIT_SHA"
     - export IMAGE_ID=$(docker create "$DOCKER_PIPELINE_IMAGE_NAME")
     - docker cp "$IMAGE_ID:/docker-volume-mkfs" docker-volume-mkfs-linux-amd64
+    - mkdir rootfs
+    - docker export $IMAGE_ID" | tar -x -C rootfs
     - docker rm "$IMAGE_ID"
+    - docker plugin create "$DOCKER_PIPELINE_PLUGIN_NAME" .
+    - docker plugin create "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA" .
+    - docker plugin push "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin push "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA"
 
   artifacts:
     expose_as: binaries

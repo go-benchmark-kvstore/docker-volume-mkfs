@@ -121,8 +121,9 @@ docker:
     - docker export "$IMAGE_ID" | tar -x -C rootfs
     - docker rm "$IMAGE_ID"
     - docker plugin create "$DOCKER_PIPELINE_PLUGIN_NAME" .
-    - docker plugin create "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA" .
     - docker plugin push "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin rm "$DOCKER_PIPELINE_PLUGIN_NAME"
+    - docker plugin install --disable --grant-all-permissions --alias "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA" "$DOCKER_PIPELINE_PLUGIN_NAME"
     - docker plugin push "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA"
 
   artifacts:

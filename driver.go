@@ -214,5 +214,5 @@ func (d *Driver) Unmount(req *volume.UnmountRequest) error {
 }
 
 func (d *Driver) umount(name string) errors.E {
-	return errors.WithStack(syscall.Unmount(path.Join(d.Dir, name)))
+	return errors.WithStack(syscall.Unmount(path.Join(d.Dir, name), 0))
 }

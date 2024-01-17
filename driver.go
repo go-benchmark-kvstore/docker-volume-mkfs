@@ -6,6 +6,7 @@ import (
 	"path"
 	"regexp"
 	"slices"
+	"syscall"
 
 	"github.com/docker/go-plugins-helpers/volume"
 	"gitlab.com/tozd/go/errors"
@@ -145,11 +146,7 @@ func (d *Driver) mount(partition, name string) errors.E {
 		return errors.WithStack(err)
 	}
 
-	// TODO: Redirect stdout and stderr to logger.
-	cmd := exec.Command("mount", partition, p)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return errors.WithStack(cmd.Run())
+	return errors.WithStack(syscall.Mount(partition, p, "xfs", 0, ""))
 }
 
 // Path implements volume.Driver.
@@ -217,9 +214,5 @@ func (d *Driver) Unmount(req *volume.UnmountRequest) error {
 }
 
 func (d *Driver) umount(name string) errors.E {
-	// TODO: Redirect stdout and stderr to logger.
-	cmd := exec.Command("umount", path.Join(d.Dir, name)) //nolint:gosec
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return errors.WithStack(cmd.Run())
+	return errors.WithStack(syscall.Unmount(path.Join(d.Dir, name)))
 }

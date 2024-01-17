@@ -5,6 +5,7 @@ go 1.21.3
 require (
 	github.com/alecthomas/kong v0.8.1
 	github.com/docker/go-plugins-helpers v0.0.0-20211224144127-6eecb7beb651
+	github.com/moby/moby v24.0.7+incompatible
 	gitlab.com/tozd/go/cli v0.2.2
 	gitlab.com/tozd/go/errors v0.8.0
 	gitlab.com/tozd/go/zerolog v0.5.1

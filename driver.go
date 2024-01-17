@@ -4,17 +4,15 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"regexp"
 	"slices"
 	"syscall"
 
 	"github.com/docker/go-plugins-helpers/volume"
+	"github.com/moby/moby/daemon/names"
 	"gitlab.com/tozd/go/errors"
 )
 
 var _ volume.Driver = (*Driver)(nil)
-
-var nameRegexp = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_.-]$`)
 
 // Capabilities implements volume.Driver.
 func (*Driver) Capabilities() *volume.CapabilitiesResponse {
@@ -30,7 +28,7 @@ func (d *Driver) Create(req *volume.CreateRequest) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if !nameRegexp.MatchString(req.Name) {
+	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return errors.New("invalid volume name")
 	}
 	if _, ok := d.volumes[req.Name]; ok {
@@ -79,7 +77,7 @@ func (d *Driver) Get(req *volume.GetRequest) (*volume.GetResponse, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if !nameRegexp.MatchString(req.Name) {
+	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return nil, errors.New("invalid volume name")
 	}
 	if _, ok := d.volumes[req.Name]; !ok {
@@ -117,7 +115,7 @@ func (d *Driver) Mount(req *volume.MountRequest) (*volume.MountResponse, error) 
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if !nameRegexp.MatchString(req.Name) {
+	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return nil, errors.New("invalid volume name")
 	}
 	partition, ok := d.volumes[req.Name]
@@ -154,7 +152,7 @@ func (d *Driver) Path(req *volume.PathRequest) (*volume.PathResponse, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if !nameRegexp.MatchString(req.Name) {
+	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return nil, errors.New("invalid volume name")
 	}
 	if _, ok := d.volumes[req.Name]; !ok {
@@ -171,7 +169,7 @@ func (d *Driver) Remove(req *volume.RemoveRequest) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if !nameRegexp.MatchString(req.Name) {
+	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return errors.New("invalid volume name")
 	}
 	if _, ok := d.volumes[req.Name]; !ok {
@@ -189,7 +187,7 @@ func (d *Driver) Unmount(req *volume.UnmountRequest) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if !nameRegexp.MatchString(req.Name) {
+	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return errors.New("invalid volume name")
 	}
 	if _, ok := d.volumes[req.Name]; !ok {

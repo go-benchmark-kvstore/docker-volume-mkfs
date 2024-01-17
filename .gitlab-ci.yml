@@ -118,7 +118,7 @@ docker:
     - export IMAGE_ID=$(docker create "$DOCKER_PIPELINE_IMAGE_NAME")
     - docker cp "$IMAGE_ID:/docker-volume-mkfs" docker-volume-mkfs-linux-amd64
     - mkdir rootfs
-    - docker export $IMAGE_ID" | tar -x -C rootfs
+    - docker export "$IMAGE_ID" | tar -x -C rootfs
     - docker rm "$IMAGE_ID"
     - docker plugin create "$DOCKER_PIPELINE_PLUGIN_NAME" .
     - docker plugin create "$CI_REGISTRY_IMAGE/plugin/commit:$CI_COMMIT_SHA" .

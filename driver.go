@@ -15,7 +15,9 @@ import (
 var _ volume.Driver = (*Driver)(nil)
 
 // Capabilities implements volume.Driver.
-func (*Driver) Capabilities() *volume.CapabilitiesResponse {
+func (d *Driver) Capabilities() *volume.CapabilitiesResponse {
+	d.Logger.Debug().Msg("capabilities")
+
 	return &volume.CapabilitiesResponse{
 		Capabilities: volume.Capability{
 			Scope: "local",
@@ -24,7 +26,15 @@ func (*Driver) Capabilities() *volume.CapabilitiesResponse {
 }
 
 // Create implements volume.Driver.
-func (d *Driver) Create(req *volume.CreateRequest) error {
+func (d *Driver) Create(req *volume.CreateRequest) (err error) {
+	d.Logger.Debug().Str("name", req.Name).Interface("options", req.Options).Msg("create")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Str("name", req.Name).Interface("options", req.Options).Err(err).Msg("create")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -73,7 +83,15 @@ func (d *Driver) create(partition string) errors.E {
 }
 
 // Get implements volume.Driver.
-func (d *Driver) Get(req *volume.GetRequest) (*volume.GetResponse, error) {
+func (d *Driver) Get(req *volume.GetRequest) (_ *volume.GetResponse, err error) {
+	d.Logger.Debug().Str("name", req.Name).Msg("get")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Str("name", req.Name).Err(err).Msg("get")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -93,7 +111,15 @@ func (d *Driver) Get(req *volume.GetRequest) (*volume.GetResponse, error) {
 }
 
 // List implements volume.Driver.
-func (d *Driver) List() (*volume.ListResponse, error) {
+func (d *Driver) List() (_ *volume.ListResponse, err error) {
+	d.Logger.Debug().Msg("list")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Err(err).Msg("list")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -111,7 +137,15 @@ func (d *Driver) List() (*volume.ListResponse, error) {
 }
 
 // Mount implements volume.Driver.
-func (d *Driver) Mount(req *volume.MountRequest) (*volume.MountResponse, error) {
+func (d *Driver) Mount(req *volume.MountRequest) (_ *volume.MountResponse, err error) {
+	d.Logger.Debug().Str("name", req.Name).Str("id", req.ID).Msg("mount")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Str("name", req.Name).Str("id", req.ID).Err(err).Msg("mount")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -148,7 +182,15 @@ func (d *Driver) mount(partition, name string) errors.E {
 }
 
 // Path implements volume.Driver.
-func (d *Driver) Path(req *volume.PathRequest) (*volume.PathResponse, error) {
+func (d *Driver) Path(req *volume.PathRequest) (_ *volume.PathResponse, err error) {
+	d.Logger.Debug().Str("name", req.Name).Msg("path")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Str("name", req.Name).Err(err).Msg("path")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -165,7 +207,15 @@ func (d *Driver) Path(req *volume.PathRequest) (*volume.PathResponse, error) {
 }
 
 // Remove implements volume.Driver.
-func (d *Driver) Remove(req *volume.RemoveRequest) error {
+func (d *Driver) Remove(req *volume.RemoveRequest) (err error) {
+	d.Logger.Debug().Str("name", req.Name).Msg("remove")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Str("name", req.Name).Err(err).Msg("remove")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -183,7 +233,15 @@ func (d *Driver) Remove(req *volume.RemoveRequest) error {
 }
 
 // Unmount implements volume.Driver.
-func (d *Driver) Unmount(req *volume.UnmountRequest) error {
+func (d *Driver) Unmount(req *volume.UnmountRequest) (err error) {
+	d.Logger.Debug().Str("name", req.Name).Str("id", req.ID).Msg("unmount")
+
+	defer func() {
+		if err != nil {
+			d.Logger.Error().Str("name", req.Name).Str("id", req.ID).Err(err).Msg("unmount")
+		}
+	}()
+
 	d.mu.Lock()
 	defer d.mu.Unlock()
 

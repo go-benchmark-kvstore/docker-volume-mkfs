@@ -37,6 +37,7 @@ func main() {
 		handler := volume.NewHandler(&driver)
 		u, _ := user.Lookup("root")
 		gid, _ := strconv.Atoi(u.Gid)
+		driver.Logger.Debug().Str("path", "/run/docker/plugins/mkfs.sock").Msg("running")
 		return errors.WithStack(handler.ServeUnix("mkfs", gid))
 	})
 }

@@ -123,6 +123,11 @@ func (d *Driver) create(partition string) errors.E {
 		return nil
 	})
 
+	err = cmd.Start()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
 	return errors.Join(g.Wait(), cmd.Wait())
 }
 

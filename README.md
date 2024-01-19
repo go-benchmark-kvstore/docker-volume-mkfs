@@ -4,9 +4,9 @@
 [![pipeline status](https://gitlab.com/go-benchmark-kvstore/docker-volume-mkfs/badges/main/pipeline.svg?ignore_skipped=true)](https://gitlab.com/go-benchmark-kvstore/docker-volume-mkfs/-/pipelines)
 
 [Docker volume plugin](https://docs.docker.com/engine/extend/legacy_plugins/) manages volumes by formatting partitions.
-You provide it with a list of available partitions and to create a volume it formats the partition and Docker then mounts it
-into your container as a volume. When volume is removed, partition is returned to available partitions, to be reformatted
-for the next volume.
+You provide it with a list of available partitions and to create a volume it formats the partition and Docker then mounts
+it into your container as a volume. When volume is removed, partition is returned to available partitions, to be
+reformatted for the next volume.
 
 This allows one to always get a clean unfragmented volume and deleting the volume is quick. If
 you have relatively short lived containers with millions of files created in a volume during their life time,

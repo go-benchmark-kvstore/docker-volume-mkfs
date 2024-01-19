@@ -45,7 +45,7 @@ $ docker plugin install --alias mkfs --grant-all-permissions \
 ```
 
 To install the latest development version (`main` branch), use `registry.gitlab.com/go-benchmark-kvstore/docker-volume-mkfs/plugin-branch/main:latest`
-for its Docker plugin image. That allows you then to upgrade the plugin when the `main` branch is updated:
+for its Docker plugin image. That allows you to upgrade the plugin when the `main` branch is updated:
 
 ```sh
 $ docker plugin disable mkfs

@@ -159,6 +159,7 @@ project:
     - docker-volume
     - mkfs
     - partition
+    - docker-volume-plugin
   # One of disabled, private, or enabled. Type: string
   wiki_access_level: disabled
 avatar: ""

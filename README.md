@@ -39,7 +39,7 @@ You should just download/use the latest one.
 The tool is implemented in Go. You can use Docker to install the plugin. For example, for `v0.1.0` version:
 
 ```sh
-$ docker plugin install --alias mkfs --grant-all-permissions \
+docker plugin install --alias mkfs --grant-all-permissions \
  registry.gitlab.com/go-benchmark-kvstore/docker-volume-mkfs/plugin-tag/v0-1-0:latest \
  partitions="/dev/nvme0n1p1 /dev/nvme1n1p1 /dev/nvme2n1p1 /dev/nvme3n1p1"
 ```
@@ -48,9 +48,9 @@ To install the latest development version (`main` branch), use `registry.gitlab.
 for its Docker plugin image. That allows you to upgrade the plugin when the `main` branch is updated:
 
 ```sh
-$ docker plugin disable mkfs
-$ docker plugin upgrade --grant-all-permissions mkfs
-$ docker plugin enable mkfs
+docker plugin disable mkfs
+docker plugin upgrade --grant-all-permissions mkfs
+docker plugin enable mkfs
 ```
 
 ## Usage
@@ -58,13 +58,13 @@ $ docker plugin enable mkfs
 You can use it for volumes of your container using `--volume-driver` argument:
 
 ```sh
-$ docker run --volume-driver mkfs ...
+docker run --volume-driver mkfs ...
 ```
 
 You can also create a named volume:
 
 ```sh
-$ docker volume create --driver mkfs <name>
+docker volume create --driver mkfs <name>
 ```
 
 ## GitHub mirror

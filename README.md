@@ -18,8 +18,8 @@ Each benchmark run gets a fresh file system and cleanup after a run is quick.
 Features:
 
 - Creates volumes with freshly formatted partitions.
-- Supports `ext4` (default, unless changed through CLI) and `xfs` file systems, which you can choose using
-  volume option `fs`.
+- Supports `ext4` (default, unless changed through CLI arguments) and `xfs` file systems, which you
+  can choose using volume option `fs`.
 - Discarding volumes is quick (just unmount).
 - When partition gets full, the volume gets full.
 
@@ -39,7 +39,7 @@ The tool is implemented in Go. You can use Docker to install the plugin. For exa
 ```sh
 docker plugin install --alias mkfs --grant-all-permissions \
  registry.gitlab.com/go-benchmark-kvstore/docker-volume-mkfs/plugin-tag/v0-1-0:latest \
- partitions="/dev/nvme0n1p1 /dev/nvme1n1p1 /dev/nvme2n1p1 /dev/nvme3n1p1"
+ args="/dev/nvme0n1p1 /dev/nvme1n1p1 /dev/nvme2n1p1 /dev/nvme3n1p1"
 ```
 
 To install the latest development version (`main` branch), use `registry.gitlab.com/go-benchmark-kvstore/docker-volume-mkfs/plugin-branch/main:latest`

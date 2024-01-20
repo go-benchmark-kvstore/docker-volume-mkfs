@@ -27,8 +27,8 @@
     }
   ],
   "args": {
-    "name": "partitions",
-    "description": "Partition(s) to use.",
+    "name": "args",
+    "description": "CLI arguments, e.g., partition(s) to use.",
     "value": [],
     "settable": ["value"]
   },

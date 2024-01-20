@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added volume option `fs` to choose between `ext4` and `xfs` file systems. The default is
+  `ext4` unless is changed using the CLI argument to the volume plugin executable.
+
 ## [0.1.0] - 2024-01-19
 
 ### Added

@@ -2,7 +2,9 @@ package main
 
 import (
 	"os/user"
+	"sort"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/alecthomas/kong"
@@ -12,12 +14,18 @@ import (
 	"gitlab.com/tozd/go/zerolog"
 )
 
+var fileSystems = map[string][]string{
+	"ext4": {"mkfs.ext4", "-F"},
+	"xfs":  {"mkfs.xfs", "-f"},
+}
+
 //nolint:lll
 type Driver struct {
 	zerolog.LoggingConfig
 
-	Partitions []string `arg:""                help:"Partition(s) to use."                                            name:"partition"                   required:""           type:"path"`
-	Dir        string   `       default:"/mnt" help:"Directory under which to mount partitions. Default: ${default}."                  placeholder:"DIR"             short:"d" type:"path"`
+	Partitions []string `arg:""                                      help:"Partition(s) to use."                                                                        name:"partition"                   required:""           type:"path"`
+	Dir        string   `       default:"/mnt"                       help:"Directory under which to mount partitions. Default: ${default}."                                              placeholder:"DIR"             short:"d" type:"path"`
+	Default    string   `       default:"ext4" enum:"${fileSystems}" help:"Default file system to format partitions as. Possible: ${fileSystems}. Default: ${default}."                  placeholder:"FS"`
 
 	// Map between volume names and partitions.
 	volumes map[string]string
@@ -30,8 +38,15 @@ type Driver struct {
 }
 
 func main() {
+	names := []string{}
+	for name := range fileSystems {
+		names = append(names, name)
+	}
+	sort.Strings(names)
 	var driver Driver
-	cli.Run(&driver, nil, func(ctx *kong.Context) errors.E {
+	cli.Run(&driver, kong.Vars{
+		"fileSystems": strings.Join(names, ","),
+	}, func(ctx *kong.Context) errors.E {
 		driver.volumes = make(map[string]string)
 		driver.mounts = make(map[string][]string)
 		handler := volume.NewHandler(&driver)

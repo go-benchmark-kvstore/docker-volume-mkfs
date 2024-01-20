@@ -48,6 +48,13 @@ func (d *Driver) Create(req *volume.CreateRequest) (err error) {
 	if _, ok := d.volumes[req.Name]; ok {
 		return errors.New("volume already exists")
 	}
+	fs, ok := req.Options["fs"]
+	if !ok {
+		fs = d.Default
+	}
+	if _, ok := fileSystems[fs]; !ok {
+		return errors.Errorf("unsupported file system: %s", fs)
+	}
 
 	availablePartitions := []string{}
 	for _, partition := range d.Partitions {
@@ -67,7 +74,7 @@ func (d *Driver) Create(req *volume.CreateRequest) (err error) {
 		return errors.New("no unused partitions left")
 	}
 
-	errE := d.create(availablePartitions[0])
+	errE := d.create(availablePartitions[0], fs)
 	if errE != nil {
 		return errE
 	}
@@ -96,8 +103,10 @@ func (d *Driver) redirectToLogger(command, partition, name string, level zerolog
 	}
 }
 
-func (d *Driver) create(partition string) errors.E {
-	cmd := exec.Command("mkfs.xfs", "-f", partition)
+func (d *Driver) create(partition, fs string) errors.E {
+	args := slices.Clone(fileSystems[fs])
+	args = append(args, partition)
+	cmd := exec.Command(args[0], args[1:]...) //nolint:gosec
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

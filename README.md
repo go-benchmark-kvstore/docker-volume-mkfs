@@ -17,13 +17,11 @@ Each benchmark run gets a fresh file system and cleanup after a run is quick.
 
 Features:
 
-- Creates volumes with freshly formatted partitions with xfs file system.
+- Creates volumes with freshly formatted partitions.
+- Supports `ext4` (default, unless changed through CLI) and `xfs` file systems, which you can choose using
+  volume option `fs`.
 - Discarding volumes is quick (just unmount).
 - When partition gets full, the volume gets full.
-
-Limitations:
-
-- Currently hard-coded to use the xfs file system to format partitions.
 
 ## Installation
 
@@ -64,7 +62,7 @@ docker run --volume-driver mkfs ...
 You can also create a named volume:
 
 ```sh
-docker volume create --driver mkfs <name>
+docker volume create --driver mkfs --opt fs=xfs <name>
 ```
 
 ## GitHub mirror

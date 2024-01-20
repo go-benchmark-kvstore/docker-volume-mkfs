@@ -14,7 +14,7 @@ import (
 	"gitlab.com/tozd/go/zerolog"
 )
 
-var fileSystems = map[string][]string{
+var fileSystems = map[string][]string{ //nolint:gochecknoglobals
 	"ext4": {"mkfs.ext4", "-F"},
 	"xfs":  {"mkfs.xfs", "-f"},
 }

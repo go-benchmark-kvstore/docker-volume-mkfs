@@ -17,6 +17,6 @@ COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 COPY --from=build /go/bin/docker-volume-mkfs /
-RUN apk --update --no-cache add xfsprogs
+RUN apk --update --no-cache add xfsprogs e2fsprogs
 RUN mkdir -p /run/docker/plugins /mnt
 ENTRYPOINT ["/docker-volume-mkfs"]

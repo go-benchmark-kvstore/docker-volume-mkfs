@@ -18,6 +18,11 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+type activeVolume struct {
+	Partition string
+	FS        string
+}
+
 var _ volume.Driver = (*Driver)(nil)
 
 // Capabilities implements volume.Driver.
@@ -60,7 +65,7 @@ func (d *Driver) Create(req *volume.CreateRequest) (err error) {
 	for _, partition := range d.Partitions {
 		found := false
 		for _, p := range d.volumes {
-			if partition == p {
+			if partition == p.Partition {
 				found = true
 				break
 			}
@@ -79,7 +84,10 @@ func (d *Driver) Create(req *volume.CreateRequest) (err error) {
 		return errE
 	}
 
-	d.volumes[req.Name] = availablePartitions[0]
+	d.volumes[req.Name] = activeVolume{
+		Partition: availablePartitions[0],
+		FS:        fs,
+	}
 	d.mounts[req.Name] = []string{}
 
 	return nil
@@ -123,11 +131,11 @@ func (d *Driver) create(partition, fs string) errors.E {
 	g := errgroup.Group{}
 
 	g.Go(func() error {
-		d.redirectToLogger("mkfs.xfs", partition, "stdout", zerolog.DebugLevel, stdout)
+		d.redirectToLogger(args[0], partition, "stdout", zerolog.DebugLevel, stdout)
 		return nil
 	})
 	g.Go(func() error {
-		d.redirectToLogger("mkfs.xfs", partition, "stderr", zerolog.ErrorLevel, stderr)
+		d.redirectToLogger(args[0], partition, "stderr", zerolog.ErrorLevel, stderr)
 		return nil
 	})
 
@@ -209,13 +217,13 @@ func (d *Driver) Mount(req *volume.MountRequest) (_ *volume.MountResponse, err e
 	if !names.RestrictedNamePattern.MatchString(req.Name) {
 		return nil, errors.New("invalid volume name")
 	}
-	partition, ok := d.volumes[req.Name]
+	ap, ok := d.volumes[req.Name]
 	if !ok {
 		return nil, errors.New("volume does not exist")
 	}
 
 	if len(d.mounts[req.Name]) == 0 {
-		errE := d.mount(partition, req.Name)
+		errE := d.mount(ap.Partition, req.Name, ap.FS)
 		if errE != nil {
 			return nil, errE
 		}
@@ -228,14 +236,14 @@ func (d *Driver) Mount(req *volume.MountRequest) (_ *volume.MountResponse, err e
 	}, nil
 }
 
-func (d *Driver) mount(partition, name string) errors.E {
+func (d *Driver) mount(partition, name, fs string) errors.E {
 	p := path.Join(d.Dir, name)
 	err := os.MkdirAll(p, 0o700) //nolint:gomnd
 	if err != nil {
 		return errors.WithStack(err)
 	}
 
-	return errors.WithStack(syscall.Mount(partition, p, "xfs", 0, ""))
+	return errors.WithStack(syscall.Mount(partition, p, fs, 0, ""))
 }
 
 // Path implements volume.Driver.

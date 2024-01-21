@@ -27,8 +27,8 @@ type Driver struct {
 	Dir        string   `       default:"/mnt"                       help:"Directory under which to mount partitions. Default: ${default}."                                              placeholder:"DIR"             short:"d" type:"path"`
 	Default    string   `       default:"ext4" enum:"${fileSystems}" help:"Default file system to format partitions as. Possible: ${fileSystems}. Default: ${default}."                  placeholder:"FS"`
 
-	// Map between volume names and partitions.
-	volumes map[string]string
+	// Map between volume names and activeVolume.
+	volumes map[string]activeVolume
 
 	// Map between volume names and active mount IDs.
 	mounts map[string][]string
@@ -47,7 +47,7 @@ func main() {
 	cli.Run(&driver, kong.Vars{
 		"fileSystems": strings.Join(names, ","),
 	}, func(ctx *kong.Context) errors.E {
-		driver.volumes = make(map[string]string)
+		driver.volumes = make(map[string]activeVolume)
 		driver.mounts = make(map[string][]string)
 		handler := volume.NewHandler(&driver)
 		u, _ := user.Lookup("root")

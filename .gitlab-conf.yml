@@ -157,9 +157,9 @@ project:
   # already added to the project. (Introduced in GitLab 14.0.) Type: array
   topics:
     - docker-volume
+    - docker-volume-plugin
     - mkfs
     - partition
-    - docker-volume-plugin
   # One of disabled, private, or enabled. Type: string
   wiki_access_level: disabled
 avatar: ""
@@ -299,7 +299,7 @@ variables:
     protected: true
     raw: true
     # sops:enc
-    value: ENC[AES256_GCM,data:LWoMEppGe9ZKDS57XOMNTVFAx86mIrx2IWQ=,iv:2lbT/7e79C3tU2q5SZXcl7JOQM2KeK1gh4+Bv94Qius=,tag:WOT2F1ohDOKKqRX4lYtcAA==,type:str]
+    value: ENC[AES256_GCM,data:uRPR+B3Yp5FHX3bSvJ1Mx/cEhw2EryHWl4c=,iv:6rquoBgzP4ERJGG0qG0LTCUAPcDdcwBOkVCxs6GhjxU=,tag:c9EXfIuvlSF678ZLX1STHg==,type:str]
     variable_type: env_var
   - description: null
     environment_scope: '*'
@@ -308,7 +308,7 @@ variables:
     protected: true
     raw: true
     # sops:enc
-    value: ENC[AES256_GCM,data:BKByp8EQJ4DzqEPBBBDy7a2qkwdwK7RNkL7LDO12aiMWLtAEAVGvA+DTEKB9VD/euAGzsH/MRx6DSRz27+oiCGKn9h0BcUaxh/oXYNcOUf7nN+0i6fsmIHDBZnuMubtDlM7Rx1FW3tZBy6X+Idkpw1A7/QQvc1mBwgPWjPdNv4CYwQBUZvzAYspz36C8uT8wPOB+zZO48S+h2H75zVcnQQYb5FwOqVQWmeik0dQrHwgcOLOrXHg8XQLESjt8,iv:hwtcP3/l0VDajkTAg65Z9c45t8nnyZKl9cQ9Ttzf2uc=,tag:qenixSTLiLjR3u9P5aRdpQ==,type:str]
+    value: ENC[AES256_GCM,data:zDyvE7bS85x9JLR/45GssXxlfNKwvBsYJsu1xkzGdoGqGSgJ6ixFL+uD/UW3/a6IZXdw4MmC66lp0qvABa9T9weX4FeNqz/TGrwSySNkv72SpnsqC6Pf0Nlz0JF1nyFFBG8iL/FFx/N5bWH9d8PDrj0PVw7bKAtQmZmpInSL8ZficjvsdVZjzdXVKRN3ksiB7PvqWSHyL5oPLnJkJXwQnyE0jCTd0kMYgcTgdsWVRS5lfiaxjyAKSaVxdhoj,iv:PHFtSfi/BtYBTZryTyl0d9eQdMrmGkhl7jXLwTlkFGk=,tag:F2h2opcy2WiSvi8OLfmbWA==,type:str]
     variable_type: file
 # active: The activation of pipeline schedule. If false is set, the pipeline
 # schedule is initially deactivated. Type: boolean
@@ -331,14 +331,14 @@ sops:
     - recipient: age1vlg36msg4fc8n0pn9dyauzzher8l8jk7ragfwn90dkprjjj4henqw85yhn
       enc: |
         -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQa2M4aEZySDNrbEJ0Tng1
-        K1lPWVd4Y1U0YWNyMHNCRHUrbUNkbG16NDJ3CnhuU0ljOFUwejRKYXpYQjdCdnkx
-        R0MwcC9ZNS9KYTh0a296eThjMGVYZzgKLS0tIHpZc2NpREFhdFp0aENFUXgyaVVr
-        KzdPL1lORHZjUElDMlhkMXVER2RSdFEKXTigwFi2r2i3joiTT9kc4GkTwIID6pMW
-        SNKfuYAMYPvT5+6XhtovLFC8EIPkpSdNp8NRvTRp2fy9CDvblwZRAQ==
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBOdkFtVmVPbWhmK0ZFUTlx
+        alE3Sm0vaE9aN2hNTytSNTNxM3Vxc0x6Vmo4ClBvaE1FNWU3aW9hNkF6cllrejJP
+        d3QyQzJDV1d3TEZFRVRQTURDSWVuU2cKLS0tIE1CNlNkWGR5WFo1YzB5UGc4UVRU
+        cmI2ZWdWSlpBMVlzMkNyZkVyWERrZGcKU8ChlUb4IA9vp1tqxju0UStb8FVHEhx2
+        2Q+PuL9+aSlAr/IgxATJpeJQb6k00+JeV02JOTOpDLncVAzPUL0Djw==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2024-01-17T10:27:22Z"
-  mac: ENC[AES256_GCM,data:qvqxd7b0Ed7HyMVC8jt+HEwXuUdocJoUdjipDyXXOoZJNrBEEjZoi2+EJZiomdXUlRTgPoR9JYswApBFc4hpv+hg7IdKEzKecuotnK7BVSIz/HYCG/1jUI7EtDk91xzUrAkcathBDVvxENV5/kmSbuQhBnBvmvRwxDakZIpwcEo=,iv:Guels2Gw8C9SveFc6FYnOb97yKKlmmISeeSYNC1l27M=,tag:xa9sDgjFiJyeSaTNYqkpbA==,type:str]
+  lastmodified: "2024-01-23T10:56:04Z"
+  mac: ENC[AES256_GCM,data:61xzMwtwDmKkzwDgiWyiMTrg1RyjjdosOa6F5R7cFBv9X4ABCvt0aK/IK3JFtUdAe/Coj/IRYhckVPEAWqwMWMdmLPH8WuOhYjF4giMCYqArh3Y2ZJtyOzcm+uWMVtdRarGXfpRQ8T0LTkZHBZzeHlRgqsptLuJtqPcQZzhcsR0=,iv:sofmP5bctlyp50iGcqfo5TpDupJJ6lNh+xmJrsjm4jA=,tag:y4qn9x2HqVE7O/RoFTkzMw==,type:str]
   pgp: []
   encrypted_comment_regex: sops:enc
   mac_only_encrypted: true

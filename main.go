@@ -23,9 +23,9 @@ var fileSystems = map[string][]string{ //nolint:gochecknoglobals
 type Driver struct {
 	zerolog.LoggingConfig
 
-	Partitions []string `arg:""                                      help:"Partition(s) to use."                                                                        name:"partition"                   required:""           type:"path"`
-	Dir        string   `       default:"/mnt"                       help:"Directory under which to mount partitions. Default: ${default}."                                              placeholder:"DIR"             short:"d" type:"path"`
-	Default    string   `       default:"ext4" enum:"${fileSystems}" help:"Default file system to format partitions as. Possible: ${fileSystems}. Default: ${default}."                  placeholder:"FS"`
+	Partitions []string `arg:""                                      help:"Partition(s) to use."                         name:"partition"                   required:""           type:"path"`
+	Dir        string   `       default:"/mnt"                       help:"Directory under which to mount partitions."                    placeholder:"DIR"             short:"d" type:"path"`
+	Default    string   `       default:"ext4" enum:"${fileSystems}" help:"Default file system to format partitions as."                  placeholder:"FS"`
 
 	// Map between volume names and activeVolume.
 	volumes map[string]activeVolume

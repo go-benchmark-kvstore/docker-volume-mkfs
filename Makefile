@@ -1,4 +1,4 @@
-SHELL = /bin/bash -o pipefail
+SHELL = /bin/bash -o pipefailSHELL = /usr/bin/env bash -o pipefail
 
 .PHONY: build build-static lint lint-ci fmt fmt-ci clean release lint-docs audit encrypt decrypt sops
 

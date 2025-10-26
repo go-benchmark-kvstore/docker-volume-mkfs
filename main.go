@@ -46,7 +46,7 @@ func main() {
 	var driver Driver
 	cli.Run(&driver, kong.Vars{
 		"fileSystems": strings.Join(names, ","),
-	}, func(ctx *kong.Context) errors.E {
+	}, func(_ *kong.Context) errors.E {
 		driver.volumes = make(map[string]activeVolume)
 		driver.mounts = make(map[string][]string)
 		handler := volume.NewHandler(&driver)

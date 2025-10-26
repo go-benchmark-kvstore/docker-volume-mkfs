@@ -238,7 +238,7 @@ func (d *Driver) Mount(req *volume.MountRequest) (_ *volume.MountResponse, err e
 
 func (d *Driver) mount(partition, name, fs string) errors.E {
 	p := path.Join(d.Dir, name)
-	err := os.MkdirAll(p, 0o700) //nolint:gomnd
+	err := os.MkdirAll(p, 0o700)
 	if err != nil {
 		return errors.WithStack(err)
 	}

@@ -24,7 +24,7 @@ variables:
 lint:
   stage: test
 
-  image: golang:1.21-alpine3.18
+  image: golang:1.24-alpine3.21
 
   before_script:
     - apk --update add make bash gcc musl-dev
@@ -42,7 +42,7 @@ lint:
 fmt:
   stage: test
 
-  image: golang:1.21-alpine3.18
+  image: golang:1.24-alpine3.21
 
   before_script:
     - apk --update add make bash git gcc musl-dev grep
@@ -66,7 +66,7 @@ lint_docs:
 audit:
   stage: test
 
-  image: golang:1.21-alpine3.18
+  image: golang:1.24-alpine3.21
 
   before_script:
     - apk --update add make bash git gcc musl-dev
@@ -78,7 +78,7 @@ audit:
 commits:
   stage: test
 
-  image: golang:1.21-alpine3.18
+  image: golang:1.24-alpine3.21
 
   variables:
     GIT_DEPTH: "0"

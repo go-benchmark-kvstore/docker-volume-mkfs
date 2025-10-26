@@ -8,11 +8,11 @@ linters-settings:
   godot:
     scope: all
   gofumpt:
-    go: "1.21"
+    go: "1.24"
   goimports:
     local-prefixes: go-benchmark-kvstore/docker-volume-mkfs
   gosimple:
-    go: "1.21"
+    go: "1.24"
     checks:
       - all
   govet:
@@ -26,17 +26,17 @@ linters-settings:
     allow-leading-space: false
     require-specific: true
   stylecheck:
-    go: "1.21"
+    go: "1.24"
     checks:
       - all
   staticcheck:
-    go: "1.21"
+    go: "1.24"
     checks:
       - all
   tagalign:
     strict: true
   unused:
-    go: "1.21"
+    go: "1.24"
 
 linters:
   disable-all: true
